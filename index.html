@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#f7f7f4">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Dayflow">
+  <meta name="description" content="A calm daily planner for routines, habits, and time-blocked tasks.">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="stylesheet" href="styles.css">
+  <title>Dayflow — Daily Planner</title>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-mark">d</span><span>dayflow</span></div>
+      <div class="side-label">WORKSPACE</div>
+      <button class="nav-item active" data-view="today"><span>◷</span> Today <kbd>1</kbd></button>
+      <button class="nav-item" data-view="habits"><span>◌</span> Habits</button>
+      <button class="nav-item" data-view="routines"><span>▦</span> Routines</button>
+      <div class="sidebar-bottom">
+        <div class="mini-card">
+          <div class="mini-title">A little progress</div>
+          <div class="mini-sub">Consistency beats intensity.</div>
+          <div class="mini-progress"><span id="sideProgress"></span></div>
+          <div class="mini-foot"><span id="sideDone">0 of 0 done</span><span>✦</span></div>
+        </div>
+        <button class="nav-item" id="settingsBtn"><span>⚙</span> Settings & data</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="mobile-brand" id="mobileMenu"><span class="brand-mark">d</span> dayflow</button>
+        <div class="date-label" id="todayLabel"></div>
+        <div class="top-actions">
+          <button class="icon-btn" id="searchBtn" aria-label="Search">⌕</button>
+          <button class="avatar" id="addTop" aria-label="Add task">＋</button>
+        </div>
+      </header>
+
+      <section class="view active" id="view-today">
+        <div class="hero-row">
+          <div>
+            <div class="eyebrow" id="greeting">YOUR DAY, AT YOUR PACE</div>
+            <h1 id="headline">Make today count.</h1>
+            <p class="muted" id="fullDate"></p>
+          </div>
+          <div class="day-score">
+            <div class="ring" id="dayRing"><div><strong id="dayPercent">0%</strong><small>complete</small></div></div>
+          </div>
+        </div>
+
+        <div class="summary-grid">
+          <article class="summary-card">
+            <div class="summary-icon lilac">◷</div>
+            <div><span class="summary-caption">Scheduled</span><strong id="scheduledCount">0</strong><small>items today</small></div>
+          </article>
+          <article class="summary-card">
+            <div class="summary-icon mint">✓</div>
+            <div><span class="summary-caption">Completed</span><strong id="completedCount">0</strong><small>small wins</small></div>
+          </article>
+          <article class="summary-card">
+            <div class="summary-icon peach">↗</div>
+            <div><span class="summary-caption">Habits</span><strong id="habitCount">0</strong><small>tracked today</small></div>
+          </article>
+        </div>
+
+        <div class="section-head">
+          <div><h2>Today's timeline</h2><p class="muted">A clear view of what comes next.</p></div>
+          <button class="primary-btn" id="addTaskBtn">＋ Add task</button>
+        </div>
+        <div class="timeline-layout">
+          <div class="timeline" id="timeline"></div>
+          <aside class="right-rail">
+            <div class="rail-card water-card">
+              <div class="rail-top"><span class="rail-icon blue">≈</span><span class="tag">DAILY HABIT</span></div>
+              <h3>Water goal</h3>
+              <p class="muted">Keep your hydration steady.</p>
+              <div class="water-numbers"><strong id="waterAmount">0</strong><span>/ 2,300 ml</span></div>
+              <div class="progress-track"><span id="waterProgress"></span></div>
+              <div class="water-meta"><span id="waterPercent">0% complete</span><button class="text-btn" id="editWater">Edit goal</button></div>
+              <button class="soft-btn full" id="addWater">＋ Log water</button>
+              <div id="waterEntries" class="water-entries"></div>
+            </div>
+            <div class="rail-card quote-card">
+              <span class="quote-mark">“</span>
+              <p>Small actions, repeated daily, create remarkable change.</p>
+              <span class="quote-author">A NOTE TO YOURSELF</span>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="view" id="view-habits">
+        <div class="page-intro"><div class="eyebrow">SHOW UP FOR YOURSELF</div><h1>Your habits</h1><p class="muted">Build consistency one small action at a time.</p></div>
+        <div class="section-head"><div><h2>Habit tracker</h2><p class="muted">Progress updates as you check off each step.</p></div><button class="primary-btn" id="addHabitBtn">＋ New habit</button></div>
+        <div id="habitsList" class="habit-list"></div>
+      </section>
+
+      <section class="view" id="view-routines">
+        <div class="page-intro"><div class="eyebrow">MAKE GOOD DAYS REPEATABLE</div><h1>Your routines</h1><p class="muted">Create a routine once, reuse it whenever you need.</p></div>
+        <div class="section-head"><div><h2>Routine library</h2><p class="muted">Templates for the things you do often.</p></div><button class="primary-btn" id="addRoutineBtn">＋ New routine</button></div>
+        <div id="routinesList" class="routine-grid"></div>
+      </section>
+
+      <section class="view" id="view-settings">
+        <div class="page-intro"><div class="eyebrow">YOUR SPACE, YOUR RULES</div><h1>Settings & data</h1><p class="muted">Your planner data stays in this browser unless you export it.</p></div>
+        <div class="settings-panel">
+          <h2>Backup & restore</h2><p class="muted">Export a backup before changing browsers or devices.</p>
+          <div class="settings-actions"><button class="primary-btn" id="exportBtn">Export backup</button><label class="soft-btn file-label">Import backup<input type="file" id="importFile" accept="application/json"></label><button class="danger-btn" id="resetBtn">Reset all data</button></div>
+          <div class="notice">Note: this is a local-first web app. Tasks and progress are saved on this device. Scheduled notifications while the app is closed are not guaranteed by iOS Safari.</div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="mobile-nav">
+    <button class="mobile-nav-item active" data-view="today"><span>◷</span><small>Today</small></button>
+    <button class="mobile-nav-item" data-view="habits"><span>◌</span><small>Habits</small></button>
+    <button class="mobile-nav-item" data-view="routines"><span>▦</span><small>Routines</small></button>
+    <button class="mobile-nav-item" id="mobileAdd"><span>＋</span><small>Add</small></button>
+  </div>
+
+  <div class="modal-backdrop" id="modalBackdrop" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-head"><div><div class="eyebrow" id="modalEyebrow">MAKE IT YOURS</div><h2 id="modalTitle">Add task</h2></div><button class="icon-btn close-modal" aria-label="Close">×</button></div>
+      <form id="editorForm">
+        <input type="hidden" id="editId">
+        <div class="form-field"><label for="taskTitle">Name</label><input id="taskTitle" maxlength="100" placeholder="e.g. Morning walk" required></div>
+        <div class="form-row">
+          <div class="form-field"><label for="taskDate">Date</label><input id="taskDate" type="date" required></div>
+          <div class="form-field"><label for="taskTime">Time</label><input id="taskTime" type="time"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-field"><label for="taskType">Type</label><select id="taskType"><option value="task">Task</option><option value="habit">Habit step</option></select></div>
+          <div class="form-field"><label for="taskRepeat">Repeat</label><select id="taskRepeat"><option value="none">Does not repeat</option><option value="daily">Every day</option><option value="weekdays">Weekdays</option><option value="weekly">Every week</option></select></div>
+        </div>
+        <div class="form-field"><label for="taskParent">Group under a habit (optional)</label><select id="taskParent"><option value="">No parent habit</option></select></div>
+        <div class="form-field"><label for="taskNote">Notes (optional)</label><textarea id="taskNote" rows="2" placeholder="Anything helpful to remember…"></textarea></div>
+        <div class="modal-actions"><button type="button" class="soft-btn close-modal">Cancel</button><button type="submit" class="primary-btn">Save task</button></div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="habitBackdrop" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="habitModalTitle">
+      <div class="modal-head"><div><div class="eyebrow">BUILD A ROUTINE</div><h2 id="habitModalTitle">New habit</h2></div><button class="icon-btn close-habit" aria-label="Close">×</button></div>
+      <form id="habitForm">
+        <input type="hidden" id="habitEditId">
+        <div class="form-field"><label for="habitTitle">Habit name</label><input id="habitTitle" placeholder="e.g. Drink 2.3 L water" maxlength="100" required></div>
+        <div class="form-row">
+          <div class="form-field"><label for="habitGoal">Daily target (optional)</label><input id="habitGoal" type="number" min="1" max="100000" placeholder="2300"></div>
+          <div class="form-field"><label for="habitUnit">Unit</label><input id="habitUnit" placeholder="ml, pages, minutes"></div>
+        </div>
+        <div class="form-field"><label for="habitColor">Accent</label><select id="habitColor"><option value="blue">Ocean blue</option><option value="lilac">Soft lilac</option><option value="mint">Sage green</option><option value="peach">Warm peach</option></select></div>
+        <div class="form-field"><label for="habitSteps">Steps (one per line; use “time | name”)</label><textarea id="habitSteps" rows="5" placeholder="08:05 | 250 ml water&#10;10:30 | 200 ml water&#10;11:30 | 200 ml water"></textarea><small class="field-help">Each step gets its own checkbox and time. Example: 08:05 | 250 ml water</small></div>
+        <div class="modal-actions"><button type="button" class="soft-btn close-habit">Cancel</button><button type="submit" class="primary-btn">Save habit</button></div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="routineBackdrop" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="routineModalTitle">
+      <div class="modal-head"><div><div class="eyebrow">REUSE THE GOOD STUFF</div><h2 id="routineModalTitle">New routine</h2></div><button class="icon-btn close-routine" aria-label="Close">×</button></div>
+      <form id="routineForm">
+        <input type="hidden" id="routineEditId">
+        <div class="form-field"><label for="routineTitle">Routine name</label><input id="routineTitle" maxlength="100" placeholder="e.g. Morning reset" required></div>
+        <div class="form-field"><label for="routineSteps">Steps (one per line; use “time | task”)</label><textarea id="routineSteps" rows="5" placeholder="07:00 | Drink water&#10;07:10 | Stretch&#10;07:30 | Walk"></textarea></div>
+        <div class="modal-actions"><button type="button" class="soft-btn close-routine">Cancel</button><button type="submit" class="primary-btn">Save routine</button></div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
